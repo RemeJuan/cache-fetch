@@ -1,0 +1,31 @@
+{
+	"title": "Cache Fetch",
+	"name": "cache-fetch",
+	"homepage": "https://www.remelehane.me",
+	"description": "Helper for caching fetch calls in localStorage",
+	"license": "MIT",
+	"browsers": true,
+	"author": "2018+ Reme Le Hane (reme.lehane@gmail.com) (https://www.remelehane.me)",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/RemeJuan/cache-fetch.git"
+	},
+	"bugs": {
+		"url": "https://github.com/RemeJuan/cache-fetch/issues"
+	},
+	"badges": {
+		"list": [
+			"nodeico",
+      "---",
+      "travisci",
+			"npmversion",
+			"npmdownloads",
+			"githubfollow",
+			"githubstar",
+			"daviddm",
+		],
+		"config": {
+			"githubUsername": "RemeJuan"
+		}
+	}
+}
