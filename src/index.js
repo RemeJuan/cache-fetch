@@ -34,8 +34,7 @@ export default async (url, options, expiry = 300) => {
 
   try {
     const response = await fetch(url, options);
-    const json = await response.json();
-    const content = JSON.stringify(json);
+    const content = JSON.stringify(response);
 
     localStorage.setItem(cacheKey, content);
     localStorage.setItem(`${cacheKey}:ts`, Date.now());
