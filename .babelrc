@@ -12,27 +12,13 @@
           ]
         },
         "include": [
-          "transform-es2015-classes",
           "transform-es2015-destructuring",
           "transform-regenerator"
         ],
-        "useBuiltIns": true,
-        "production": {
-          "plugins": [
-            "transform-react-remove-prop-types",
-            {
-              "mode": "remove",
-              "ignoreFilenames": [
-                "node_modules"
-              ],
-              "removeImport": true
-            }
-          ]
-        }
+        "useBuiltIns": true
       }
     ],
-    "stage-1",
-    "react"
+    "stage-1"
   ],
   "plugins": [
     "transform-runtime"
