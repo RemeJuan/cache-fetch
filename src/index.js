@@ -28,27 +28,27 @@ export default (url, options) => {
   const cached = localStorage.getItem(cacheKey);
   const whenCached = localStorage.getItem(`${cacheKey}:ts`);
   if (cached !== null && whenCached !== null) {
+
     const age = (Date.now() - whenCached) / 1000;
     if (age < expiry) {
       const response = new Response(new Blob([cached]));
       return Promise.resolve(response);
     }
+
     localStorage.removeItem(cacheKey);
     localStorage.removeItem(`${cacheKey}:ts`);
   }
 
-  return fetch(url, options)
-    .then((response) => {
-      if (response.ok) {
-        response.json()
-          .then((con) => {
-            const content = JSON.stringify(con);
-
-            localStorage.setItem(cacheKey, content);
-            localStorage.setItem(`${cacheKey}:ts`, Date.now());
-          });
+  return fetch(url, options).then((response) => {
+    if (response.status === 200) {
+      const ct = response.headers.get('Content-Type');
+      if (ct && (ct.match(/application\/json/i) || ct.match(/text\//i))) {
+        response.clone().text().then((content) => {
+          localStorage.setItem(cacheKey, content);
+          localStorage.setItem(`${cacheKey}:ts`, Date.now());
+        });
       }
-      return response;
-    });
+    }
+    return response;
+  });
 };
-
