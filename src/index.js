@@ -28,7 +28,6 @@ export default (url, options) => {
   const cached = localStorage.getItem(cacheKey);
   const whenCached = localStorage.getItem(`${cacheKey}:ts`);
   if (cached !== null && whenCached !== null) {
-
     const age = (Date.now() - whenCached) / 1000;
     if (age < expiry) {
       const response = new Response(new Blob([cached]));
