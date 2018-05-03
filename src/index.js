@@ -1,4 +1,4 @@
-/* eslint-disable no-bitwise */
+/* eslint-disable no-bitwise, no-param-reassign */
 
 const hashString = s => (
   s.split('')
@@ -15,32 +15,40 @@ const hashString = s => (
 * @param {*} options fetch options
 * @param {number} expiry time in seconds for caching, default = 300 (5 minutes)
 */
-export default async (url, options, expiry = 300) => {
+export default (url, options) => {
+  let expiry = 5 * 60;
+  if (typeof options === 'number') {
+    expiry = options;
+    options = undefined;
+  } else if (typeof options === 'object') {
+    expiry = options.seconds || expiry;
+  }
+
   const cacheKey = hashString(url);
   const cached = localStorage.getItem(cacheKey);
   const whenCached = localStorage.getItem(`${cacheKey}:ts`);
-
   if (cached !== null && whenCached !== null) {
     const age = (Date.now() - whenCached) / 1000;
-
     if (age < expiry) {
       const response = new Response(new Blob([cached]));
       return Promise.resolve(response);
     }
-
     localStorage.removeItem(cacheKey);
     localStorage.removeItem(`${cacheKey}:ts`);
   }
 
-  try {
-    const response = await fetch(url, options);
-    const content = JSON.stringify(response);
+  return fetch(url, options)
+    .then((response) => {
+      if (response.ok) {
+        response.json()
+          .then((con) => {
+            const content = JSON.stringify(con);
 
-    localStorage.setItem(cacheKey, content);
-    localStorage.setItem(`${cacheKey}:ts`, Date.now());
-
-    return response;
-  } catch (error) {
-    return error;
-  }
+            localStorage.setItem(cacheKey, content);
+            localStorage.setItem(`${cacheKey}:ts`, Date.now());
+          });
+      }
+      return response;
+    });
 };
+
