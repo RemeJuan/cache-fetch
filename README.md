@@ -62,6 +62,40 @@ return response.json();
 ...
 ```
 
+## Offline handling (Great for PWA's)
+
+Assuming the API call has been made already and your application has been setup for offline usage, you can use this helper to retrieve the saved data instead of using the `cacheFetch` which will invalidate if cache time has elapsed.
+
+```javascript
+import cacheFetch, { offlineResponse } from 'cache-fetch';
+
+/* Will need proper implimentation based on application setup */
+let online = true;
+window.addEventListener('online', () => online = true);
+window.addEventListener('offline', () => online = false);
+...
+/**
+* Cached fetch wrapper/helper
+* @param {string} url URL being fetched
+* @param {*} options fetch options
+* @param {number} expiry time in seconds for caching, default = 300 (5 minutes)
+*/
+const url = 'API PATH';
+const options = {
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  }
+};
+
+const response = online ? cacheFetch(url, options) : offlineResponse(url);
+// or
+const response = online ? cacheFetch(url, options, 600) : offlineResponse(url);
+
+return response.json();
+...
+```
+
 <!-- HISTORY/ -->
 
 <h2>History</h2>

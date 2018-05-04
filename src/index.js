@@ -12,6 +12,18 @@ const hashString = s => (
 /**
 * Cached fetch wrapper/helper
 * @param {string} url URL being fetched
+*/
+export function offlineResponse(url) {
+  const cacheKey = hashString(url);
+  const cached = localStorage.getItem(cacheKey);
+
+  const response = new Response(new Blob([cached]));
+  return Promise.resolve(response);
+}
+
+/**
+* Cached fetch wrapper/helper
+* @param {string} url URL being fetched
 * @param {*} options fetch options
 * @param {number} expiry time in seconds for caching, default = 300 (5 minutes)
 */
