@@ -1,6 +1,6 @@
 {
   "name": "cache-fetch",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Helper for caching fetch calls in localStorage",
   "main": "build/index.js",
   "scripts": {
